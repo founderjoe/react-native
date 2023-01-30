@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
+
+const PortfolioCalculator = () => {
+  const [portfolioValue, setPortfolioValue] = useState(0);
+  const [stocks, setStocks] = useState([]);
+  const [savings, setSavings] = useState(0);
+  const [investment, setInvestment] = useState(0);
+  const [returns, setReturns] = useState(0);
+
+  const handleAddMoney = () => {
+    const addAmount = parseFloat(prompt('Enter amount to add:'));
+    setPortfolioValue(portfolioValue + addAmount);
+  };
+
+  const handleAddStock = () => {
+    const stockName = prompt('Enter stock name:');
+    const stockPrice = parseFloat(prompt('Enter stock price:'));
+    setStocks([...stocks, { name: stockName, price: stockPrice }]);
+    setPortfolioValue(portfolioValue + stockPrice);
+  };
+
+  const handleCalculate = () => {
+    setSavings(parseFloat(savings));
+    setInvestment(parseFloat(investment));
+    setReturns(parseFloat(returns));
+    setPortfolioValue(savings + investment + investment * returns);
+  };
+
+  return (
+    <View>
+      <Text>Savings:</Text>
+      <TextInput
+        keyboardType='numeric'
+        onChangeText={(text) => setSavings(text)}
+        value={savings.toString()}
+      />
+      <Text>Investment:</Text>
+      <TextInput
+        keyboardType='numeric'
+        onChangeText={(text) => setInvestment(text)}
+        value={investment.toString()}
+      />
+      <Text>Returns:</Text>
+      <TextInput
+        keyboardType='numeric'
+        onChangeText={(text) => setReturns(text)}
+        value={returns.toString()}
+      />
+      <Button onPress={handleCalculate} title='Calculate' />
+      <Button onPress={handleAddMoney} title='Add Money' />
+      <Button onPress={handleAddStock} title='Add Stock' />
+      <Text>Portfolio Value: ${portfolioValue}</Text>
+      {stocks.map((stock, index) => (
+        <Text key={index}>
+          {stock.name}: ${stock.price}
+        </Text>
+      ))}
+    </View>
+  );
+};
+
+export default PortfolioCalculator;
